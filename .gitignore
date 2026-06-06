@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/release
 
 /venv
+venv/
+/__pycache__
+__pycache__/

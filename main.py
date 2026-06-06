@@ -38,4 +38,9 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.commit()           # تأكيد الحفظ في قاعدة البيانات
     db.refresh(db_user)   # تحديث البيانات لنجلب الـ ID الذي تم إنشاؤه تلقائياً
     
+    # مسار لجلب جميع المشاريع من قاعدة البيانات
+@app.get("/projects/", response_model=list[schemas.ProjectResponse])
+def get_projects(db: Session = Depends(get_db)):
+    return db.query(models.Project).all()
+
     return db_user        # إعادة البيانات (كرد) لتطبيق فلاتر

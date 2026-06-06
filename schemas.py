@@ -19,3 +19,13 @@ class UserResponse(BaseModel):
 
     class Config:
         from_attributes = True # لكي يفهم البيانات القادمة من قاعدة البيانات
+        
+class ProjectResponse(BaseModel):
+    id: int
+    project_code: str
+    task_type_key: str
+    status: str
+    progress: int
+
+    class Config:
+        from_attributes = True
