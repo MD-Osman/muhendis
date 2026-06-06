@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/project_model.dart';
 import '../services/api_service.dart';
 import '../widgets/project_card.dart';
+import 'add_project_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -63,10 +64,25 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // هنا ستضيف لاحقاً زر لإضافة مشروع جديد
+        onPressed: () async {
+          // ننتظر حتى تعود الشاشة، إذا عادت بـ true نقوم بتحديث القائمة
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddProjectScreen()),
+          );
+
+          if (result == true) {
+            setState(() {
+              // إعادة جلب المشاريع من السيرفر لتحديث الشاشة
+              futureProjects = apiService.fetchProjects(); 
+            });
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('✅ تم إضافة المشروع بنجاح!')),
+            );
+          }
         },
-        child: const Icon(Icons.add),
+        backgroundColor: Colors.indigo,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

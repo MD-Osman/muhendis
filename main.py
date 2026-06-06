@@ -42,5 +42,16 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 @app.get("/projects/", response_model=list[schemas.ProjectResponse])
 def get_projects(db: Session = Depends(get_db)):
     return db.query(models.Project).all()
-
+@app.post("/projects/", response_model=schemas.ProjectResponse)
+def create_project(project: schemas.ProjectCreate, db: Session = Depends(get_db)):
+    db_project = models.Project(
+        project_code=project.project_code,
+        task_type_key=project.task_type_key,
+        status=project.status,
+        progress=project.progress
+    )
+    db.add(db_project)
+    db.commit()
+    db.refresh(db_project)
+    return db_project
     return db_user        # إعادة البيانات (كرد) لتطبيق فلاتر

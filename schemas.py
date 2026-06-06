@@ -29,3 +29,8 @@ class ProjectResponse(BaseModel):
 
     class Config:
         from_attributes = True
+class ProjectCreate(BaseModel):
+    project_code: str
+    task_type_key: str
+    status: str
+    progress: int
