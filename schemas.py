@@ -1,25 +1,56 @@
 from pydantic import BaseModel
 from typing import Optional
+from datetime import date
+from enum import Enum
 
-# 1. القالب الذي سيستقبله الخادم من تطبيق فلاتر (لإنشاء مستخدم جديد)
+# تعريف الأدوار
+class UserRole(str, Enum):
+    manager = "مدير"
+    engineer = "مهندس"
+    accountant = "محاسب"
+    read_only = "قراءة فقط"
+
+# ------------------ قوالب المستخدمين ------------------
+
+# قالب إضافة مستخدم جديد (تم إزالة username، والاعتماد على email)
 class UserCreate(BaseModel):
-    username: str
-    password: str
     full_name: str
-    role: str # مدير، مهندس، الخ
+    email: str
+    password: str
+    role: UserRole
     phone: Optional[str] = None
-    email: Optional[str] = None
 
-# 2. القالب الذي سيرده الخادم لتطبيق فلاتر (نخفي منه كلمة المرور للأمان)
+# قالب إرجاع بيانات المستخدم (نخفي كلمة المرور للحماية)
 class UserResponse(BaseModel):
     id: int
-    username: str
     full_name: str
-    role: str
+    email: str
+    role: UserRole
+    is_active: bool
 
     class Config:
-        from_attributes = True # لكي يفهم البيانات القادمة من قاعدة البيانات
-        
+        from_attributes = True
+
+# قالب تسجيل الدخول (Login)
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+# قالب التذكرة (Token)
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+    role: str
+    name: str
+
+# ------------------ قوالب المشاريع ------------------
+
+class ProjectCreate(BaseModel):
+    project_code: str
+    task_type_key: str
+    status: str = "قيد الانتظار"
+    progress: int = 0
+
 class ProjectResponse(BaseModel):
     id: int
     project_code: str
@@ -29,8 +60,21 @@ class ProjectResponse(BaseModel):
 
     class Config:
         from_attributes = True
-class ProjectCreate(BaseModel):
-    project_code: str
-    task_type_key: str
-    status: str
-    progress: int
+
+# ------------------ قوالب العملاء ------------------
+
+class ClientCreate(BaseModel):
+    name: str
+    phone: str
+    email: Optional[str] = None
+    company_name: Optional[str] = None
+
+class ClientResponse(BaseModel):
+    id: int
+    name: str
+    phone: str
+    email: Optional[str] = None
+    company_name: Optional[str] = None
+
+    class Config:
+        from_attributes = True

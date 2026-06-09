@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:muhendis/screens/login_screen.dart';
 // استدعاء الشاشة الجديدة
-import 'screens/home_screen.dart';
+import 'screens/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.indigo,
         fontFamily: 'Cairo', 
       ),
-      home: const HomeScreen(), // توجيه التطبيق للشاشة الرئيسية
+      home: const LoginScreen(), // توجيه التطبيق للشاشة الرئيسية
     );
   }
   

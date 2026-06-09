@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/project_model.dart';
+import '../screens/project_details_screen.dart';
 
 class ProjectCard extends StatelessWidget {
   final ProjectModel project;
@@ -16,7 +17,13 @@ class ProjectCard extends StatelessWidget {
         // لجعل البطاقة قابلة للضغط
         borderRadius: BorderRadius.circular(12),
         onTap: () {
-          // لاحقاً: عند الضغط هنا سننتقل لشاشة "تفاصيل المشروع"
+          // فتح شاشة التفاصيل وتمرير بيانات المشروع الحالي لها
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProjectDetailsScreen(project: project),
+            ),
+          );
         },
         child: Padding(
           padding: const EdgeInsets.all(16.0),
